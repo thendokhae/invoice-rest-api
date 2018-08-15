@@ -22,19 +22,19 @@ public class InvoiceController {
     private InMemoryRepository repository;
 
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<Invoice>> findAllOrders() {
+    public ResponseEntity<List<Invoice>> findAllInvoices() {
         List<Invoice> invoices = repository.findAll();
         return new ResponseEntity<>(invoices, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.POST, consumes = "application/json")
-    public ResponseEntity<Invoice> createOrder(@RequestBody Invoice invoice) {
+    public ResponseEntity<Invoice> createInvoice(@RequestBody Invoice invoice) {
         Invoice createdInvoice = repository.create(invoice);
         return new ResponseEntity<>(createdInvoice, HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Invoice> findOrderById(@PathVariable Long id) {
+    public ResponseEntity<Invoice> findInvoiceById(@PathVariable Long id) {
         Invoice invoice = repository.findById(id);
 
         if (invoice != null) {
