@@ -1,20 +1,32 @@
 package za.co.digitalplatoon.controller.rest.repositories;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import za.co.digitalplatoon.controller.rest.entities.Invoice;
+import za.co.digitalplatoon.controller.rest.entities.LineItem;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+@Repository
 public class InMemoryRepository {
     @Autowired
-    private IdGenerator idGenerator;
+    private InvoiceIdGenerator invoiceIdGenerator;
+
+    @Autowired
+    private  LineItemIdGenerator lineItemIdGenerator;
 
     private List<Invoice> elements = Collections.synchronizedList(new ArrayList<Invoice>());
 
     public Invoice create(Invoice element) {
         elements.add(element);
+        element.setId(invoiceIdGenerator.getNextId());
+        if(element.getLineItems() != null && !element.getLineItems().isEmpty()){
+            for (LineItem lineItem: element.getLineItems()) {
+                lineItem.setId(lineItemIdGenerator.getNextId());
+            }
+        }
         return element;
     }
 
